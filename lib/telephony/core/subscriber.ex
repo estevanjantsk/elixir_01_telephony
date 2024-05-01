@@ -12,4 +12,16 @@ defmodule Telephony.Core.Subscriber do
     payload = %{payload | subscriber_type: %Pospaid{}}
     struct(__MODULE__, payload)
   end
+
+  def make_call(%{subscriber_type: %Prepaid{}} = subscriber, time_spent, date),
+    do: Prepaid.make_call(subscriber, time_spent, date)
+
+  def make_call(%{subscriber_type: %Pospaid{}} = subscriber, time_spent, date),
+    do: Pospaid.make_call(subscriber, time_spent, date)
+
+  def make_recharge(%{subscriber_type: %Prepaid{}} = subscriber, value, date),
+    do: Prepaid.make_recharge(subscriber, value, date)
+
+  def make_recharge(_subscriber, _value, _date),
+    do: {:error, "Only prepaid can make a recharge"}
 end
