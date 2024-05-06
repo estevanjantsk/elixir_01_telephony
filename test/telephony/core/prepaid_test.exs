@@ -113,7 +113,8 @@ defmodule Telephony.Core.PrepaidTest do
                  value_spent: 14.0,
                  time_spent: 10
                }
-             ]
+             ],
+             credits: 110
            }
   end
 end

@@ -1,5 +1,5 @@
 defmodule Telephony.Core.Pospaid do
-  alias Telephony.Core.Call
+  alias Telephony.Core.{Call, Invoice, Pospaid}
 
   defstruct spent: 0
 
@@ -15,6 +15,10 @@ defmodule Telephony.Core.Pospaid do
     |> update_call(time_spent, date)
   end
 
+  def get_value_spent(time) do
+    time * @price_per_minute
+  end
+
   defp update_spent(%{subscriber_type: subscriber_type} = subscriber, time_spent) do
     spent = @price_per_minute * time_spent
     subscriber_type = %{subscriber_type | spent: subscriber_type.spent + spent}
@@ -24,5 +28,26 @@ defmodule Telephony.Core.Pospaid do
   defp update_call(subscriber, time_spent, date) do
     call = Call.new(time_spent, date)
     %{subscriber | calls: subscriber.calls ++ [call]}
+  end
+
+  defimpl Invoice, for: Telephony.Core.Pospaid do
+    def print(%Pospaid{spent: spent} = _subscriber_type, calls, year, month) do
+      calls =
+        Enum.reduce(calls, [], fn call, acc ->
+          value_spent = Pospaid.get_value_spent(call.time_spent)
+
+          if(call.date.year == year and call.date.month == month) do
+            call = %{date: call.date, time_spent: call.time_spent, value_spent: value_spent}
+            acc ++ [call]
+          else
+            acc
+          end
+        end)
+
+      %{
+        spent: spent,
+        calls: calls
+      }
+    end
   end
 end
