@@ -17,4 +17,11 @@ defmodule Telephony.Server do
       subscribers -> {:reply, subscribers, subscribers}
     end
   end
+
+  def handle_call({:search_subscriber, phone_number}, _from, subscribers) do
+    case Core.search_subscriber(subscribers, phone_number) do
+      nil -> {:reply, {:error, "Subscriber not found"}, subscribers}
+      subscriber -> {:reply, subscriber, subscribers}
+    end
+  end
 end
