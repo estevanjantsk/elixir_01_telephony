@@ -31,6 +31,8 @@ defmodule Telephony.Core do
     end
   end
 
+  # could add make_call and print_invoice...
+
   defp make_recharge_and_update_subscribers(subscribers, subscriber, value, date) do
     case Subscriber.make_recharge(subscriber, value, date) do
       {:error, _} ->
