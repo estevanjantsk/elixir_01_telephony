@@ -3,8 +3,8 @@ defmodule Telephony.Core do
 
   @subscriber_types [:prepaid, :pospaid]
 
-  def create_subscriber(subscribers, %{subscriber_type: subscriber_type} = payload)
-      when subscriber_type in @subscriber_types do
+  def create_subscriber(subscribers, %{type: type} = payload)
+      when type in @subscriber_types do
     case Enum.find(subscribers, fn s -> s.phone_number == payload.phone_number end) do
       nil ->
         subscriber = Subscriber.new(payload)

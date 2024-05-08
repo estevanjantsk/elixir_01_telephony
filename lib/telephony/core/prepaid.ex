@@ -6,8 +6,8 @@ defmodule Telephony.Core.Prepaid do
 
   @price_per_minute 1.4
 
-  def make_call(%{subscriber_type: subscriber_type} = subscriber, time_spent, date) do
-    if(has_credits(subscriber_type, time_spent)) do
+  def make_call(%{type: type} = subscriber, time_spent, date) do
+    if(has_credits(type, time_spent)) do
       subscriber
       |> update_credit_spent(time_spent)
       |> add_new_call(time_spent, date)
@@ -16,31 +16,31 @@ defmodule Telephony.Core.Prepaid do
     end
   end
 
-  def make_recharge(%{subscriber_type: subscriber_type} = subscriber, value, date) do
+  def make_recharge(%{type: type} = subscriber, value, date) do
     recharge = Recharge.new(value, date)
 
-    subscriber_type = %{
-      subscriber_type
-      | credits: subscriber_type.credits + value,
-        recharges: subscriber_type.recharges ++ [recharge]
+    type = %{
+      type
+      | credits: type.credits + value,
+        recharges: type.recharges ++ [recharge]
     }
 
-    %{subscriber | subscriber_type: subscriber_type}
+    %{subscriber | type: type}
   end
 
   def get_value_spent(time) do
     time * @price_per_minute
   end
 
-  defp has_credits(subscriber_type, time_spent) do
+  defp has_credits(type, time_spent) do
     credit_spent = @price_per_minute * time_spent
-    subscriber_type.credits >= credit_spent
+    type.credits >= credit_spent
   end
 
-  defp update_credit_spent(%{subscriber_type: subscriber_type} = subscriber, time_spent) do
+  defp update_credit_spent(%{type: type} = subscriber, time_spent) do
     credit_spent = @price_per_minute * time_spent
-    subscriber_type = %{subscriber_type | credits: subscriber_type.credits - credit_spent}
-    %{subscriber | subscriber_type: subscriber_type}
+    type = %{type | credits: type.credits - credit_spent}
+    %{subscriber | type: type}
   end
 
   defp add_new_call(subscriber, time_spent, date) do
@@ -50,7 +50,7 @@ defmodule Telephony.Core.Prepaid do
   end
 
   defimpl Invoice, for: Telephony.Core.Prepaid do
-    def print(%Prepaid{recharges: recharges} = subscriber_type, calls, year, month) do
+    def print(%Prepaid{recharges: recharges} = type, calls, year, month) do
       recharges =
         Enum.filter(recharges, &(&1.date.year == year and &1.date.month == month))
         |> Enum.map(&%{date: &1.date, credits: &1.value})
@@ -70,7 +70,7 @@ defmodule Telephony.Core.Prepaid do
       %{
         recharges: recharges,
         calls: calls,
-        credits: subscriber_type.credits
+        credits: type.credits
       }
     end
   end

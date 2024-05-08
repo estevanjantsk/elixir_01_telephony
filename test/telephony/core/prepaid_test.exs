@@ -7,13 +7,13 @@ defmodule Telephony.Core.PrepaidTest do
     subscriber = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Prepaid{credits: 10, recharges: []}
+      type: %Prepaid{credits: 10, recharges: []}
     }
 
     subscriber_without_credits = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Prepaid{credits: 0, recharges: []}
+      type: %Prepaid{credits: 0, recharges: []}
     }
 
     %{subscriber: subscriber, subscriber_without_credits: subscriber_without_credits}
@@ -27,7 +27,7 @@ defmodule Telephony.Core.PrepaidTest do
     expected = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Prepaid{credits: 7.2, recharges: []},
+      type: %Prepaid{credits: 7.2, recharges: []},
       calls: [
         %Call{time_spent: 2, date: date}
       ]
@@ -58,7 +58,7 @@ defmodule Telephony.Core.PrepaidTest do
     expected = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Prepaid{
+      type: %Prepaid{
         credits: 110,
         recharges: [
           %Recharge{value: 100, date: date}
@@ -75,7 +75,7 @@ defmodule Telephony.Core.PrepaidTest do
     subscriber = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Prepaid{
+      type: %Prepaid{
         credits: 110,
         recharges: [
           %Recharge{value: 100, date: date},
@@ -95,11 +95,11 @@ defmodule Telephony.Core.PrepaidTest do
       ]
     }
 
-    subscriber_type = subscriber.subscriber_type
+    type = subscriber.type
     calls = subscriber.calls
 
     assert Invoice.print(
-             subscriber_type,
+             type,
              calls,
              2024,
              7

@@ -19,10 +19,10 @@ defmodule Telephony.Core.Pospaid do
     time * @price_per_minute
   end
 
-  defp update_spent(%{subscriber_type: subscriber_type} = subscriber, time_spent) do
+  defp update_spent(%{type: type} = subscriber, time_spent) do
     spent = @price_per_minute * time_spent
-    subscriber_type = %{subscriber_type | spent: subscriber_type.spent + spent}
-    %{subscriber | subscriber_type: subscriber_type}
+    type = %{type | spent: type.spent + spent}
+    %{subscriber | type: type}
   end
 
   defp update_call(subscriber, time_spent, date) do

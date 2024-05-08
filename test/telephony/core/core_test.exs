@@ -9,14 +9,14 @@ defmodule Telephony.CoreTest do
       %Subscriber{
         full_name: "Estevan",
         phone_number: "123",
-        subscriber_type: %Prepaid{credits: 0, recharges: []}
+        type: %Prepaid{credits: 0, recharges: []}
       }
     ]
 
     payload = %{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: :prepaid
+      type: :prepaid
     }
 
     %{
@@ -39,10 +39,10 @@ defmodule Telephony.CoreTest do
     {:error, "Subscriber `123` already exist"} = result
   end
 
-  test "display error, when subscriber_type does not exist", %{
+  test "display error, when type does not exist", %{
     payload: payload
   } do
-    payload = Map.put(payload, :subscriber_type, :shausuha)
+    payload = Map.put(payload, :type, :shausuha)
     result = Core.create_subscriber([], payload)
     {:error, "Only 'prepaid' or 'postpaid' are accepted"} = result
   end

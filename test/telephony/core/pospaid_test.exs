@@ -7,7 +7,7 @@ defmodule Telephony.Core.PospaidTest do
     subscriber = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Pospaid{spent: 0}
+      type: %Pospaid{spent: 0}
     }
 
     %{subscriber: subscriber}
@@ -21,7 +21,7 @@ defmodule Telephony.Core.PospaidTest do
     expected = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Pospaid{spent: 2.08},
+      type: %Pospaid{spent: 2.08},
       calls: [
         %Call{time_spent: 2, date: date}
       ]
@@ -36,7 +36,7 @@ defmodule Telephony.Core.PospaidTest do
     subscriber = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Pospaid{
+      type: %Pospaid{
         spent: 100
       },
       calls: [
@@ -51,11 +51,11 @@ defmodule Telephony.Core.PospaidTest do
       ]
     }
 
-    subscriber_type = subscriber.subscriber_type
+    type = subscriber.type
     calls = subscriber.calls
 
     assert Invoice.print(
-             subscriber_type,
+             type,
              calls,
              2024,
              7

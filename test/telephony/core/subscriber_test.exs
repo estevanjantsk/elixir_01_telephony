@@ -7,13 +7,13 @@ defmodule Telephony.Core.SubscriberTest do
     pospaid = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Pospaid{spent: 0}
+      type: %Pospaid{spent: 0}
     }
 
     prepaid = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Prepaid{credits: 7.2, recharges: []}
+      type: %Prepaid{credits: 7.2, recharges: []}
     }
 
     %{pospaid: pospaid, prepaid: prepaid}
@@ -24,7 +24,7 @@ defmodule Telephony.Core.SubscriberTest do
     payload = %{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: :prepaid
+      type: :prepaid
     }
 
     # when
@@ -34,7 +34,7 @@ defmodule Telephony.Core.SubscriberTest do
     expected = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Prepaid{credits: 0, recharges: []}
+      type: %Prepaid{credits: 0, recharges: []}
     }
 
     assert result == expected
@@ -45,7 +45,7 @@ defmodule Telephony.Core.SubscriberTest do
     payload = %{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: :pospaid
+      type: :pospaid
     }
 
     # when
@@ -55,7 +55,7 @@ defmodule Telephony.Core.SubscriberTest do
     expected = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Pospaid{spent: 0}
+      type: %Pospaid{spent: 0}
     }
 
     assert result == expected
@@ -67,7 +67,7 @@ defmodule Telephony.Core.SubscriberTest do
     expected = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Pospaid{spent: 2.08},
+      type: %Pospaid{spent: 2.08},
       calls: [
         %Call{time_spent: 2, date: date}
       ]
@@ -85,7 +85,7 @@ defmodule Telephony.Core.SubscriberTest do
     expected = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Prepaid{credits: 4.4, recharges: []},
+      type: %Prepaid{credits: 4.4, recharges: []},
       calls: [
         %Call{time_spent: 2, date: date}
       ]
@@ -106,7 +106,7 @@ defmodule Telephony.Core.SubscriberTest do
     expected = %Subscriber{
       full_name: "Estevan",
       phone_number: "123",
-      subscriber_type: %Prepaid{
+      type: %Prepaid{
         credits: 107.2,
         recharges: [
           %Recharge{value: 100, date: date}
