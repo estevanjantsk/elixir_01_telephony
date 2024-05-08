@@ -1,5 +1,5 @@
 defmodule Telephony.Core.Subscriber do
-  alias Telephony.Core.{Prepaid, Pospaid}
+  alias Telephony.Core.{Prepaid, Pospaid, Invoice}
 
   defstruct full_name: nil, phone_number: nil, subscriber_type: :prepaid, calls: []
 
@@ -13,12 +13,18 @@ defmodule Telephony.Core.Subscriber do
     struct(__MODULE__, payload)
   end
 
+  # Print
+  def print_invoice(subscriber_type, calls, year, month),
+    do: Invoice.print(subscriber_type, calls, year, month)
+
+  # Make call
   def make_call(%{subscriber_type: %Prepaid{}} = subscriber, time_spent, date),
     do: Prepaid.make_call(subscriber, time_spent, date)
 
   def make_call(%{subscriber_type: %Pospaid{}} = subscriber, time_spent, date),
     do: Pospaid.make_call(subscriber, time_spent, date)
 
+  # Make recharge
   def make_recharge(%{subscriber_type: %Prepaid{}} = subscriber, value, date),
     do: Prepaid.make_recharge(subscriber, value, date)
 
