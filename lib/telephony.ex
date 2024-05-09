@@ -1,18 +1,11 @@
 defmodule Telephony do
-  @moduledoc """
-  Documentation for `Telephony`.
-  """
+  @server :telephony
 
-  @doc """
-  Hello world.
+  def create_subscriber(payload) do
+    GenServer.call(@server, {:create_subscriber, payload})
+  end
 
-  ## Examples
-
-      iex> Telephony.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def search_subscriber(phone_number) do
+    GenServer.call(@server, {:search_subscriber, phone_number})
   end
 end

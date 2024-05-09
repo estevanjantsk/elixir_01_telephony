@@ -10,14 +10,15 @@ defmodule Telephony.MixProject do
       deps: deps(),
       preferred_cli_env: [
         "test.watch": :test
-      ],
+      ]
     ]
   end
 
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :wx, :runtime_tools, :observer]
+      extra_applications: [:logger, :wx, :runtime_tools, :observer],
+      mod: {Telephony.Application, []}
     ]
   end
 

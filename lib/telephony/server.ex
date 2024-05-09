@@ -1,5 +1,5 @@
 defmodule Telephony.Server do
-  @behaviour GenServer
+  use GenServer
 
   alias Telephony.Core
 
